@@ -32,7 +32,7 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background: linear-gradient(transparent, rgba(59, 130, 246, 0.6));
+      background: linear-gradient(transparent, rgba(59, 130, 246, 0.7));
       transition: height 0.6s ease;
     }
   </style>
@@ -75,23 +75,26 @@
   </div>
 
   <!-- CONTROLES -->
-  <div class="grid grid-cols-3 md:grid-cols-6 gap-3 mb-8">
-    <button onclick="plantSeed()" class="bg-emerald-600 hover:bg-emerald-700 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2">
+  <div class="grid grid-cols-3 md:grid-cols-7 gap-3 mb-8">
+    <button onclick="plantSeed()" class="bg-emerald-600 hover:bg-emerald-700 py-4 rounded-xl font-bold flex items-center justify-center gap-2">
       <i class="fas fa-seedling"></i> PLANTAR
     </button>
-    <button onclick="waterPlant()" class="bg-blue-600 hover:bg-blue-700 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2">
+    <button onclick="waterPlant()" class="bg-blue-600 hover:bg-blue-700 py-4 rounded-xl font-bold flex items-center justify-center gap-2">
       <i class="fas fa-tint"></i> REGAR
     </button>
-    <button onclick="harvest()" class="bg-amber-600 hover:bg-amber-700 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2">
+    <button onclick="collectRiverWater()" class="bg-cyan-600 hover:bg-cyan-700 py-4 rounded-xl font-bold flex items-center justify-center gap-2">
+      <i class="fas fa-water"></i> PEGAR ÁGUA DO RIO
+    </button>
+    <button onclick="harvest()" class="bg-amber-600 hover:bg-amber-700 py-4 rounded-xl font-bold flex items-center justify-center gap-2">
       <i class="fas fa-hand-holding"></i> COLHER
     </button>
-    <button onclick="sellHarvest()" class="bg-green-600 hover:bg-green-700 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2">
+    <button onclick="sellHarvest()" class="bg-green-600 hover:bg-green-700 py-4 rounded-xl font-bold flex items-center justify-center gap-2">
       <i class="fas fa-dollar-sign"></i> VENDER
     </button>
-    <button onclick="regenerateSoil()" class="bg-amber-700 hover:bg-amber-800 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2">
+    <button onclick="regenerateSoil()" class="bg-amber-700 hover:bg-amber-800 py-4 rounded-xl font-bold flex items-center justify-center gap-2">
       <i class="fas fa-sync"></i> REGENERAR SOLO
     </button>
-    <button onclick="openShop()" class="bg-purple-600 hover:bg-purple-700 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2">
+    <button onclick="openShop()" class="bg-purple-600 hover:bg-purple-700 py-4 rounded-xl font-bold flex items-center justify-center gap-2">
       <i class="fas fa-store"></i> LOJA
     </button>
   </div>
@@ -113,7 +116,7 @@
 </div>
 
 <script>
-// ==================== VARIÁVEIS DO JOGO ====================
+// ==================== VARIÁVEIS ====================
 let day = 1;
 let money = 0;
 let totalEarned = 0;
@@ -131,11 +134,10 @@ const seeds = [
 
 // ==================== INICIALIZAÇÃO ====================
 function startGame() {
-  // Começa com uma muda já plantada
   currentPlant = {
     name: "Cenoura",
     emoji: "🌱",
-    stage: 1,        // muda jovem
+    stage: 1,
     maxStage: 4,
     value: 85,
     waterNeed: 25
@@ -146,8 +148,8 @@ function startGame() {
 function updateUI() {
   document.getElementById('day').textContent = day;
   document.getElementById('money').textContent = `$ ${money}`;
-  document.getElementById('water').textContent = `${water}%`;
-  document.getElementById('soil').textContent = `${soil}%`;
+  document.getElementById('water').textContent = `${Math.floor(water)}%`;
+  document.getElementById('soil').textContent = `${Math.floor(soil)}%`;
   document.getElementById('totalEarned').textContent = `$ ${totalEarned}`;
   
   const plantEl = document.getElementById('plant');
@@ -167,7 +169,7 @@ function updateUI() {
 // ==================== AÇÕES ====================
 function plantSeed() {
   if (currentPlant) {
-    alert("Já tem uma planta no solo!");
+    alert("Já tem uma planta crescendo!");
     return;
   }
   openShop();
@@ -187,20 +189,26 @@ function waterPlant() {
   updateUI();
 }
 
+function collectRiverWater() {
+  const amount = 45;
+  water = Math.min(100, water + amount);
+  alert(`💧 Você pegou água do rio! +${amount}% de água`);
+  updateUI();
+}
+
 function harvest() {
   if (!currentPlant || currentPlant.stage < currentPlant.maxStage) {
-    alert("A planta ainda não está pronta para colher!");
+    alert("A planta ainda não está madura para colher!");
     return;
   }
-  
   alert(`🌾 Você colheu ${currentPlant.name}!`);
-  currentPlant = null;           // Planta desaparece
+  currentPlant = null;
   updateUI();
 }
 
 function sellHarvest() {
   if (currentPlant) {
-    alert("Colha a planta antes de vender!");
+    alert("Colha primeiro antes de vender!");
     return;
   }
   const sellValue = Math.floor(Math.random() * 40) + 70;
@@ -217,7 +225,7 @@ function regenerateSoil() {
   }
   money -= 25;
   soil = 100;
-  alert("🌱 Solo regenerado com sucesso!");
+  alert("🌱 Solo regenerado!");
   updateUI();
 }
 
@@ -227,8 +235,6 @@ function nextDay() {
   if (currentPlant) {
     water = Math.max(0, water - 18);
     soil = Math.max(25, soil - 9);
-    
-    // Crescimento automático lento
     if (water > 25) {
       currentPlant.stage = Math.min(currentPlant.maxStage, currentPlant.stage + 1);
     }
@@ -266,12 +272,11 @@ function openShop() {
 function buySeed(id) {
   const seed = seeds.find(s => s.id === id);
   if (money < seed.price) {
-    alert("Dinheiro insuficiente para comprar esta semente!");
+    alert("Dinheiro insuficiente!");
     return;
   }
   
   money -= seed.price;
-  
   currentPlant = {
     name: seed.name,
     emoji: seed.emoji,
@@ -283,14 +288,14 @@ function buySeed(id) {
   
   closeShop();
   updateUI();
-  alert(`🌱 ${seed.name} plantada com sucesso!`);
+  alert(`🌱 ${seed.name} plantada!`);
 }
 
 function closeShop() {
   document.getElementById('shopModal').classList.add('hidden');
 }
 
-// Iniciar o jogo
+// Iniciar jogo
 startGame();
 </script>
 
