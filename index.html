@@ -1,51 +1,112 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cultivo Equilibrado</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cultivo Equilibrado</title>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
+  <header>
     <h1>🌱 Cultivo Equilibrado</h1>
-    <p>Agro forte, futuro sustentável</p>
-</header>
 
-<main>
-    <div id="game-container">
+    <p>
+      Agro forte, futuro sustentável:
+      equilíbrio entre produção e meio ambiente
+    </p>
+  </header>
 
-        <div id="status-panel">
-            <div>📅 Dia: <span id="dia">1</span></div>
-            <div>💰 Ouro: $<span id="ouro">50</span></div>
-            <div>💧 Água: <span id="agua">100</span>%</div>
-            <div>🌱 Solo: <span id="solo">100</span>%</div>
-        </div>
+  <main>
 
-        <div id="fazenda">
-            <div class="plot" id="plot"></div>
-        </div>
+    <section id="painel">
 
-        <div id="action-panel">
-            <button id="btn-plantar">🌿 Plantar</button>
-            <button id="btn-regar">💧 Regar</button>
-            <button id="btn-colher">🍅 Colher</button>
-            <button id="btn-vender">💰 Vender</button>
-            <button id="btn-regenerar">♻️ Regenerar Solo</button>
-        </div>
+      <div class="info">
+        🌞 Dia: <span id="dia">1</span>
+      </div>
 
-        <div id="msg-container">
-            <p id="mensagem">Bem-vindo à fazenda sustentável!</p>
-        </div>
+      <div class="info">
+        💰 Ouro: <span id="ouro">50</span>
+      </div>
 
-    </div>
-</main>
+      <div class="info">
+        💧 Água: <span id="agua">100</span>%
+      </div>
 
-<footer>
+      <div class="info">
+        🌱 Solo: <span id="solo">100</span>%
+      </div>
+
+      <div class="info">
+        🍅 Colheita: <span id="colheita">0</span>
+      </div>
+
+    </section>
+
+    <section id="fazenda">
+
+      <div class="terreno" id="campo">
+        🌾
+      </div>
+
+    </section>
+
+    <section id="acoes">
+
+      <button id="btnPlantar">
+        Plantar
+      </button>
+
+      <button id="btnRegar">
+        Regar
+      </button>
+
+      <button id="btnColher">
+        Colher
+      </button>
+
+      <button id="btnVender">
+        Vender
+      </button>
+
+      <button id="btnSolo">
+        Regenerar Solo
+      </button>
+
+      <button id="btnDescansar">
+        Passar Dia
+      </button>
+
+    </section>
+
+    <section id="mensagens">
+      <p id="texto">
+        Bem-vindo à fazenda sustentável!
+      </p>
+    </section>
+
+    <section id="instrucoes">
+
+      <h2>Como jogar</h2>
+
+      <ul>
+        <li>🌱 Plante tomates</li>
+        <li>💧 Regue para crescer</li>
+        <li>🍅 Colha quando estiver pronto</li>
+        <li>💰 Venda para ganhar ouro</li>
+        <li>♻️ Cuide do solo e da água</li>
+      </ul>
+
+    </section>
+
+  </main>
+
+  <footer>
     Concurso Agrinho 2026
-</footer>
+  </footer>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
+
 </body>
 </html>
