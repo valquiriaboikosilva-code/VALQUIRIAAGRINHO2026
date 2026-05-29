@@ -3,110 +3,188 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cultivo Equilibrado</title>
-
-  <link rel="stylesheet" href="style.css">
+  <title>Jogo de Cultivo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e0f7fa;
+      color: #00695c;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    .stats, .actions {
+      margin: 20px 0;
+    }
+    .stats div {
+      margin: 5px 0;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #00796b;
+      color: white;
+    }
+    button:disabled {
+      background-color: #b2dfdb;
+      cursor: not-allowed;
+    }
+    .progress {
+      width: 300px;
+      height: 20px;
+      background-color: #b2dfdb;
+      margin: 5px auto;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background-color: #004d40;
+      width: 0%;
+      transition: width 0.3s;
+    }
+  </style>
 </head>
 <body>
+  <h1>🌱 Jogo de Cultivo</h1>
 
-  <header>
-    <h1>🌱 Cultivo Equilibrado</h1>
+  <div class="stats">
+    <div>Dia: <span id="dia">1</span></div>
+    <div>Dinheiro: $<span id="dinheiro">100</span></div>
+    <div>Água: <span id="agua">100</span>%</div>
+    <div>Solo: <span id="solo">100</span>%</div>
+    <div>Planta: <span id="plantaStatus">Nenhuma</span></div>
+    <div>Progresso da planta:</div>
+    <div class="progress"><div id="plantProgress" class="progress-bar"></div></div>
+  </div>
 
-    <p>
-      Agro forte, futuro sustentável:
-      equilíbrio entre produção e meio ambiente
-    </p>
-  </header>
+  <div class="actions">
+    <button onclick="comprarSementes()">Comprar Sementes ($20)</button>
+    <button onclick="plantar()" id="plantBtn">Plantar</button>
+    <button onclick="regar()" id="regarBtn">Regar</button>
+    <button onclick="colher()" id="colherBtn">Colher</button>
+    <button onclick="vender()" id="venderBtn">Vender Planta ($50)</button>
+    <button onclick="regenerarSolo()">Regenerar Solo ($30)</button>
+  </div>
 
-  <main>
+  <script>
+    // Variáveis do jogo
+    let dia = 1;
+    let dinheiro = 100;
+    let agua = 100;
+    let solo = 100;
+    let sementes = 0;
+    let planta = null;
+    let progresso = 0;
 
-    <section id="painel">
+    // Atualiza os valores na tela
+    function atualizarTela() {
+      document.getElementById('dia').innerText = dia;
+      document.getElementById('dinheiro').innerText = dinheiro;
+      document.getElementById('agua').innerText = agua;
+      document.getElementById('solo').innerText = solo;
+      document.getElementById('plantProgress').style.width = progresso + '%';
+      document.getElementById('plantaStatus').innerText = planta ? planta : "Nenhuma";
 
-      <div class="info">
-        🌞 Dia: <span id="dia">1</span>
-      </div>
+      // Habilitar/Desabilitar botões
+      document.getElementById('plantBtn').disabled = sementes <= 0 || planta !== null;
+      document.getElementById('regarBtn').disabled = planta === null || agua <= 0;
+      document.getElementById('colherBtn').disabled = progresso < 100;
+      document.getElementById('venderBtn').disabled = planta === null || progresso < 100;
+    }
 
-      <div class="info">
-        💰 Ouro: <span id="ouro">50</span>
-      </div>
+    // Funções de ação
+    function comprarSementes() {
+      if (dinheiro >= 20) {
+        sementes++;
+        dinheiro -= 20;
+        alert("Você comprou 1 semente!");
+      } else {
+        alert("Dinheiro insuficiente!");
+      }
+      atualizarTela();
+    }
 
-      <div class="info">
-        💧 Água: <span id="agua">100</span>%
-      </div>
+    function plantar() {
+      if (sementes > 0 && planta === null) {
+        planta = "Planta Crescendo";
+        sementes--;
+        progresso = 0;
+        dia++;
+        atualizarTela();
+      }
+    }
 
-      <div class="info">
-        🌱 Solo: <span id="solo">100</span>%
-      </div>
+    function regar() {
+      if (planta !== null && agua > 0) {
+        let incremento = Math.min(100 - progresso, agua / 2);
+        progresso += incremento;
+        agua -= 10;
+        dia++;
+        atualizarTela();
+      }
+    }
 
-      <div class="info">
-        🍅 Colheita: <span id="colheita">0</span>
-      </div>
+    function colher() {
+      if (progresso >= 100) {
+        planta = null;
+        progresso = 0;
+        dia++;
+        alert("Você colheu a planta!");
+        atualizarTela();
+      }
+    }
 
-    </section>
+    function vender() {
+      if (planta === null && progresso >= 100) {
+        dinheiro += 50;
+        progresso = 0;
+        alert("Você vendeu a planta por $50!");
+        atualizarTela();
+      } else if (progresso >= 100) {
+        dinheiro += 50;
+        planta = null;
+        progresso = 0;
+        alert("Você vendeu a planta por $50!");
+        atualizarTela();
+      }
+    }
 
-    <section id="fazenda">
+    function regenerarSolo() {
+      if (dinheiro >= 30) {
+        solo = 100;
+        dinheiro -= 30;
+        dia++;
+        alert("Solo regenerado!");
+        atualizarTela();
+      } else {
+        alert("Dinheiro insuficiente!");
+      }
+    }
 
-      <div class="terreno" id="campo">
-        🌾
-      </div>
+    // Simulação de dia passando e solo/água diminuindo
+    setInterval(() => {
+      if (planta !== null) {
+        agua = Math.max(0, agua - 2);
+        solo = Math.max(0, solo - 1);
+        if (agua === 0 || solo === 0) {
+          planta = null;
+          progresso = 0;
+          alert("Sua planta morreu por falta de cuidado!");
+        }
+      } else {
+        agua = Math.min(100, agua + 1); // água natural regenera
+      }
+      atualizarTela();
+    }, 3000); // a cada 3 segundos = 1 "dia" automático
 
-    </section>
-
-    <section id="acoes">
-
-      <button id="btnPlantar">
-        Plantar
-      </button>
-
-      <button id="btnRegar">
-        Regar
-      </button>
-
-      <button id="btnColher">
-        Colher
-      </button>
-
-      <button id="btnVender">
-        Vender
-      </button>
-
-      <button id="btnSolo">
-        Regenerar Solo
-      </button>
-
-      <button id="btnDescansar">
-        Passar Dia
-      </button>
-
-    </section>
-
-    <section id="mensagens">
-      <p id="texto">
-        Bem-vindo à fazenda sustentável!
-      </p>
-    </section>
-
-    <section id="instrucoes">
-
-      <h2>Como jogar</h2>
-
-      <ul>
-        <li>🌱 Plante tomates</li>
-        <li>💧 Regue para crescer</li>
-        <li>🍅 Colha quando estiver pronto</li>
-        <li>💰 Venda para ganhar ouro</li>
-        <li>♻️ Cuide do solo e da água</li>
-      </ul>
-
-    </section>
-
-  </main>
-
-  <footer>
-    Concurso Agrinho 2026
-  </footer>
-
-  <script src="script.js"></script>
-
+    atualizarTela();
+  </script>
 </body>
 </html>
