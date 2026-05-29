@@ -3,45 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cultivo Equilibrado - Concurso Agrinho 2026</title>
+    <title>Cultivo Equilibrado</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <h1>Cultivo Equilibrado</h1>
-        <p>Agro forte, futuro sustentável: equilíbrio entre produção e meio ambiente</p>
-    </header>
+<header>
+    <h1>🌱 Cultivo Equilibrado</h1>
+    <p>Agro forte, futuro sustentável</p>
+</header>
 
-    <main>
-        <div id="game-container">
-            <div id="status-panel">
-                <div class="status-item">Dia: <span id="dia">1</span></div>
-                <div class="status-item">Ouro: $<span id="ouro">50</span></div>
-                <div class="status-item">Água da Reserva: <span id="agua">100</span>%</div>
-                <div class="status-item">Saúde do Solo: <span id="solo">100</span>%</div>
-            </div>
+<main>
+    <div id="game-container">
 
-            <div id="fazenda"></div>
-
-            <div id="action-panel">
-                <button id="btn-plantar" title="Custo: $10, Solo -5%">Plantar Tomate</button>
-                <button id="btn-regar" title="Custo: Água -15%">Regar</button>
-                <button id="btn-colher" title="Solo -5%">Colher</button>
-                <button id="btn-vender" title="Ouro +30">Vender Colheita</button>
-                <button id="btn-regenerar" title="Custo: $20, Solo +20%">Adubo Orgânico</button>
-            </div>
-            
-            <div id="msg-container">
-                <p id="mensagem">Instrução: Clique em um quadrado marrom da fazenda para selecioná-lo e escolha uma ação!</p>
-            </div>
+        <div id="status-panel">
+            <div>📅 Dia: <span id="dia">1</span></div>
+            <div>💰 Ouro: $<span id="ouro">50</span></div>
+            <div>💧 Água: <span id="agua">100</span>%</div>
+            <div>🌱 Solo: <span id="solo">100</span>%</div>
         </div>
-    </main>
 
-    <footer>
-        <p>Subcategoria 3: Programação Front-End | Rede Estadual de Ensino do Paraná</p>
-    </footer>
+        <div id="fazenda">
+            <div class="plot" id="plot"></div>
+        </div>
 
-    <script src="script.js"></script>
+        <div id="action-panel">
+            <button id="btn-plantar">🌿 Plantar</button>
+            <button id="btn-regar">💧 Regar</button>
+            <button id="btn-colher">🍅 Colher</button>
+            <button id="btn-vender">💰 Vender</button>
+            <button id="btn-regenerar">♻️ Regenerar Solo</button>
+        </div>
+
+        <div id="msg-container">
+            <p id="mensagem">Bem-vindo à fazenda sustentável!</p>
+        </div>
+
+    </div>
+</main>
+
+<footer>
+    Concurso Agrinho 2026
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
