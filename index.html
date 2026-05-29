@@ -3,133 +3,135 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🌾 Valquíria Farm</title>
+  <title>🌸 Valquíria Farm 🌸</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom, #0f172a, #1e3a2f, #2e5c2b);
-      background-image: url('https://images.unsplash.com/photo-1500382017468-88cb43b2d2a3?q=80&w=1920');
+      background: linear-gradient(to bottom, #a5d6ff, #c3e6b8, #f0e6b8);
+      background-image: url('https://images.unsplash.com/photo-1587502536900-baf0c3d6a0e0?q=80&w=1920');
       background-size: cover;
       background-position: center;
-      background-attachment: fixed;
       min-height: 100vh;
-      color: white;
+      color: #333;
     }
     .plot {
-      width: 300px;
-      height: 300px;
-      background: linear-gradient(#5C4033, #8B5A2B);
-      border: 12px solid #3f2a1e;
-      border-radius: 25px;
+      width: 320px;
+      height: 320px;
+      background: linear-gradient(#8d6b4a, #c4a07c);
+      border: 14px solid #5c4033;
+      border-radius: 30px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     }
     .plant {
       position: absolute;
-      bottom: 15px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 130px;
-      transition: all 1s ease;
-      filter: drop-shadow(0 15px 15px rgba(0,0,0,0.5));
+      font-size: 140px;
+      transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
     }
     .water-level {
       position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
-      background: linear-gradient(transparent, rgba(59, 130, 246, 0.65));
-      transition: height 0.8s ease;
+      background: linear-gradient(transparent, #60a5fa88);
+      transition: height 1s ease;
     }
-    .shop-item {
+    button {
       transition: all 0.3s ease;
     }
-    .shop-item:hover {
-      transform: scale(1.08) rotate(2deg);
+    button:hover {
+      transform: scale(1.08) translateY(-3px);
+    }
+    .cute-title {
+      text-shadow: 3px 3px 0px #fff, -2px -2px 0px #fff;
     }
   </style>
 </head>
-<body>
+<body class="min-h-screen">
 
 <div class="max-w-5xl mx-auto p-6">
-  <h1 class="text-5xl font-bold text-center mb-6 text-yellow-300 drop-shadow-lg">
-    🌾 VALQUÍRIA FARM 🌾
+  <h1 class="text-6xl font-bold text-center mb-8 text-pink-600 cute-title">
+    🌸 VALQUÍRIA FARM 🌸
   </h1>
 
   <!-- STATS -->
-  <div class="grid grid-cols-5 gap-4 mb-8 text-center bg-black/50 backdrop-blur-md rounded-3xl p-5">
+  <div class="grid grid-cols-5 gap-4 mb-10 text-center bg-white/70 backdrop-blur-md rounded-3xl p-6 shadow-xl">
     <div>
-      <p class="text-sm text-gray-300">Dia</p>
-      <p id="day" class="text-4xl font-bold text-amber-300">1</p>
+      <p class="text-sm text-rose-600">Dia</p>
+      <p id="day" class="text-4xl font-bold text-amber-600">1</p>
     </div>
     <div>
-      <p class="text-sm text-gray-300">💰 Dinheiro</p>
-      <p id="money" class="text-4xl font-bold text-green-400">$ 0</p>
+      <p class="text-sm text-rose-600">💰 Dinheiro</p>
+      <p id="money" class="text-4xl font-bold text-emerald-600">$ 0</p>
     </div>
     <div>
-      <p class="text-sm text-gray-300">💧 Água</p>
-      <p id="water" class="text-4xl font-bold text-blue-400">85%</p>
+      <p class="text-sm text-rose-600">💧 Água</p>
+      <p id="water" class="text-4xl font-bold text-blue-500">85%</p>
     </div>
     <div>
-      <p class="text-sm text-gray-300">🌱 Solo</p>
-      <p id="soil" class="text-4xl font-bold text-amber-600">88%</p>
+      <p class="text-sm text-rose-600">🌱 Solo</p>
+      <p id="soil" class="text-4xl font-bold text-amber-700">88%</p>
     </div>
     <div>
-      <p class="text-sm text-gray-300">Total Ganhos</p>
-      <p id="totalEarned" class="text-4xl font-bold text-yellow-400">$ 0</p>
+      <p class="text-sm text-rose-600">Total</p>
+      <p id="totalEarned" class="text-4xl font-bold text-pink-600">$ 0</p>
     </div>
   </div>
 
-  <!-- PLOT -->
-  <div class="flex justify-center mb-8">
-    <div class="plot" id="plot">
+  <!-- CANTEIRO FOFINHO -->
+  <div class="flex justify-center mb-10">
+    <div class="plot">
       <div id="waterOverlay" class="water-level h-0"></div>
       <div id="plant" class="plant">🌱</div>
     </div>
   </div>
 
-  <!-- CONTROLES -->
-  <div class="grid grid-cols-3 md:grid-cols-7 gap-3 mb-8">
-    <button onclick="plantSeed()" class="bg-emerald-700 hover:bg-emerald-600 py-5 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg">
-      <i class="fas fa-seedling"></i> PLANTAR
+  <!-- BOTÕES FOFINHOS -->
+  <div class="grid grid-cols-3 md:grid-cols-7 gap-4 mb-10">
+    <button onclick="plantSeed()" class="bg-pink-500 hover:bg-pink-400 text-white py-6 rounded-3xl font-bold text-lg shadow-lg flex items-center justify-center gap-2">
+      🌱 PLANTAR
     </button>
-    <button onclick="waterPlant()" class="bg-blue-600 hover:bg-blue-500 py-5 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg">
-      <i class="fas fa-tint"></i> REGAR
+    <button onclick="waterPlant()" class="bg-blue-500 hover:bg-blue-400 text-white py-6 rounded-3xl font-bold text-lg shadow-lg flex items-center justify-center gap-2">
+      💧 REGAR
     </button>
-    <button onclick="collectRiverWater()" class="bg-cyan-600 hover:bg-cyan-500 py-5 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg">
-      <i class="fas fa-water"></i> ÁGUA DO RIO
+    <button onclick="collectRiverWater()" class="bg-cyan-500 hover:bg-cyan-400 text-white py-6 rounded-3xl font-bold text-lg shadow-lg flex items-center justify-center gap-2">
+      🪣 ÁGUA DO RIO
     </button>
-    <button onclick="harvest()" class="bg-amber-600 hover:bg-amber-500 py-5 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg">
-      <i class="fas fa-hand-holding"></i> COLHER
+    <button onclick="harvest()" class="bg-amber-500 hover:bg-amber-400 text-white py-6 rounded-3xl font-bold text-lg shadow-lg flex items-center justify-center gap-2">
+      🌾 COLHER
     </button>
-    <button onclick="sellHarvest()" class="bg-green-600 hover:bg-green-500 py-5 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg">
-      <i class="fas fa-dollar-sign"></i> VENDER
+    <button onclick="sellHarvest()" class="bg-emerald-500 hover:bg-emerald-400 text-white py-6 rounded-3xl font-bold text-lg shadow-lg flex items-center justify-center gap-2">
+      💰 VENDER
     </button>
-    <button onclick="regenerateSoil()" class="bg-orange-700 hover:bg-orange-600 py-5 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg">
-      <i class="fas fa-sync"></i> REGENERAR SOLO
+    <button onclick="regenerateSoil()" class="bg-orange-500 hover:bg-orange-400 text-white py-6 rounded-3xl font-bold text-lg shadow-lg flex items-center justify-center gap-2">
+      🌍 REGENERAR SOLO
     </button>
-    <button onclick="openShop()" class="bg-purple-700 hover:bg-purple-600 py-5 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg">
-      <i class="fas fa-store"></i> LOJA
+    <button onclick="openShop()" class="bg-purple-500 hover:bg-purple-400 text-white py-6 rounded-3xl font-bold text-lg shadow-lg flex items-center justify-center gap-2">
+      🛒 LOJA
     </button>
   </div>
 
   <div class="text-center">
-    <button onclick="nextDay()" class="bg-amber-900 hover:bg-amber-800 px-12 py-4 rounded-3xl text-xl font-bold shadow-xl">
-      ⏭️ AVANÇAR DIA
+    <button onclick="nextDay()" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-16 py-5 rounded-3xl text-2xl font-bold shadow-2xl">
+      ⏭️ Avançar para o próximo dia ✨
     </button>
   </div>
 </div>
 
-<!-- SHOP MODAL -->
-<div id="shopModal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center">
-  <div class="bg-gradient-to-b from-amber-950 to-green-950 rounded-3xl p-8 max-w-lg w-full mx-4 border border-amber-700">
-    <h2 class="text-4xl font-bold text-center mb-2 text-yellow-300">🛒 Loja do Dia <span id="currentDay" class="text-xl"></span></h2>
-    <p class="text-center text-gray-400 mb-6">Sementes disponíveis hoje</p>
+<!-- LOJA FOFINHA -->
+<div id="shopModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center">
+  <div class="bg-white rounded-3xl p-8 max-w-lg w-full mx-4 shadow-2xl">
+    <h2 class="text-4xl font-bold text-center mb-2 text-pink-600">🛒 Loja do Dia <span id="currentDay" class="text-2xl"></span></h2>
+    <p class="text-center text-gray-500 mb-6">Escolha suas sementinhas fofas!</p>
     <div id="shopItems" class="grid grid-cols-1 gap-4"></div>
-    <button onclick="closeShop()" class="mt-6 w-full bg-red-700 hover:bg-red-600 py-4 rounded-2xl font-bold text-lg">FECHAR LOJA</button>
+    <button onclick="closeShop()" class="mt-6 w-full bg-rose-500 hover:bg-rose-600 text-white py-4 rounded-3xl font-bold text-xl">Fechar Loja</button>
   </div>
 </div>
 
@@ -143,12 +145,12 @@ let soil = 88;
 let currentPlant = null;
 
 const allSeeds = [
-  { id: 1, name: "Cenoura", emoji: "🥕", price: 30, value: 95, maxStage: 4 },
-  { id: 2, name: "Tomate", emoji: "🍅", price: 45, value: 135, maxStage: 5 },
-  { id: 3, name: "Morango", emoji: "🍓", price: 65, value: 190, maxStage: 4 },
-  { id: 4, name: "Girassol", emoji: "🌻", price: 80, value: 260, maxStage: 6 },
-  { id: 5, name: "Batata", emoji: "🥔", price: 40, value: 110, maxStage: 5 },
-  { id: 6, name: "Milho", emoji: "🌽", price: 55, value: 160, maxStage: 5 }
+  { id: 1, name: "Cenourinha", emoji: "🥕", price: 25, value: 90, maxStage: 4 },
+  { id: 2, name: "Tomatinho", emoji: "🍅", price: 40, value: 140, maxStage: 5 },
+  { id: 3, name: "Moranguinho", emoji: "🍓", price: 55, value: 195, maxStage: 4 },
+  { id: 4, name: "Girassolzinho", emoji: "🌻", price: 70, value: 270, maxStage: 6 },
+  { id: 5, name: "Batatinha", emoji: "🥔", price: 35, value: 120, maxStage: 5 },
+  { id: 6, name: "Milhozinho", emoji: "🌽", price: 50, value: 165, maxStage: 5 }
 ];
 
 let availableSeeds = [];
@@ -156,13 +158,12 @@ let availableSeeds = [];
 // ==================== INICIALIZAÇÃO ====================
 function startGame() {
   refreshShopStock();
-  currentPlant = { name: "Cenoura", emoji: "🌱", stage: 1, maxStage: 4, value: 95, waterNeed: 25 };
+  currentPlant = { name: "Cenourinha", emoji: "🌱", stage: 1, maxStage: 4, value: 90 };
   updateUI();
 }
 
 function refreshShopStock() {
-  // Embaralha e pega 3 sementes aleatórias
-  availableSeeds = [...allSeeds].sort(() => 0.5 - Math.random()).slice(0, 3);
+  availableSeeds = [...allSeeds].sort(() => Math.random() - 0.5).slice(0, 3);
 }
 
 function updateUI() {
@@ -177,72 +178,72 @@ function updateUI() {
 
   if (currentPlant) {
     const growth = (currentPlant.stage / currentPlant.maxStage) * 100;
-    plantEl.style.fontSize = `${80 + growth * 1.4}px`;
+    plantEl.style.fontSize = `${85 + growth * 1.5}px`;
     plantEl.textContent = currentPlant.emoji;
-    waterOverlay.style.height = `${water * 2}px`;
+    waterOverlay.style.height = `${water * 2.2}px`;
   } else {
-    plantEl.textContent = '';
+    plantEl.textContent = '🪴';
     waterOverlay.style.height = '0';
   }
 }
 
 // ==================== AÇÕES ====================
 function plantSeed() {
-  if (currentPlant) return alert("Já tem uma planta no terreno!");
+  if (currentPlant) return alert("🌱 Já tem uma plantinha crescendo!");
   openShop();
 }
 
 function waterPlant() {
-  if (!currentPlant) return alert("Não há planta para regar!");
-  if (water < 15) return alert("Água insuficiente!");
+  if (!currentPlant) return alert("Plante algo primeiro 💕");
+  if (water < 15) return alert("💧 Não tem água suficiente!");
   water -= 15;
   currentPlant.stage = Math.min(currentPlant.maxStage, currentPlant.stage + 1);
   updateUI();
 }
 
 function collectRiverWater() {
-  water = Math.min(100, water + 48);
-  alert("💧 Você encheu o balde no rio! +48% de água");
+  water = Math.min(100, water + 50);
+  alert("🪣 Você pegou água fresquinha do rio! +50% 💧");
   updateUI();
 }
 
 function harvest() {
   if (!currentPlant || currentPlant.stage < currentPlant.maxStage) {
-    return alert("A planta ainda não está madura!");
+    return alert("🌱 Ainda não está madurinha...");
   }
-  alert(`🌾 Colhido: ${currentPlant.name}!`);
+  alert(`🎉 Você colheu ${currentPlant.name}! Que linda!`);
   currentPlant = null;
   updateUI();
 }
 
 function sellHarvest() {
-  if (currentPlant) return alert("Colha a planta primeiro!");
-  const sellValue = Math.floor(Math.random() * 45) + 75;
+  if (currentPlant) return alert("Colha primeiro!");
+  const sellValue = Math.floor(Math.random() * 50) + 80;
   money += sellValue;
   totalEarned += sellValue;
-  alert(`💰 Vendido por $${sellValue}`);
+  alert(`💰 Vendido por $${sellValue}! Parabéns! ✨`);
   updateUI();
 }
 
 function regenerateSoil() {
-  if (money < 30) return alert("Precisa de $30 para regenerar o solo.");
+  if (money < 30) return alert("💰 Precisa de $30 para cuidar do solo!");
   money -= 30;
   soil = 100;
-  alert("🌱 Solo revitalizado!");
+  alert("🌍 O solo está feliz e saudável novamente! 💕");
   updateUI();
 }
 
 function nextDay() {
   day++;
-  refreshShopStock();        // Muda a loja todo dia
+  refreshShopStock();
 
   if (currentPlant) {
-    water = Math.max(0, water - 20);
-    soil = Math.max(20, soil - 10);
-    if (water > 30) currentPlant.stage = Math.min(currentPlant.maxStage, currentPlant.stage + 1);
+    water = Math.max(10, water - 22);
+    soil = Math.max(20, soil - 11);
+    if (water > 35) currentPlant.stage = Math.min(currentPlant.maxStage, currentPlant.stage + 1);
   } else {
-    water = Math.min(100, water + 18);
-    soil = Math.max(20, soil - 4);
+    water = Math.min(100, water + 20);
+    soil = Math.max(20, soil - 5);
   }
 
   updateUI();
@@ -250,20 +251,20 @@ function nextDay() {
 
 // ==================== LOJA ====================
 function openShop() {
-  document.getElementById('currentDay').textContent = `(Dia ${day})`;
+  document.getElementById('currentDay').textContent = `— Dia ${day}`;
   const container = document.getElementById('shopItems');
   container.innerHTML = '';
 
   availableSeeds.forEach(seed => {
     const div = document.createElement('div');
-    div.className = "shop-item bg-amber-950 border border-amber-700 rounded-2xl p-5 text-center";
+    div.className = "bg-gradient-to-br from-pink-100 to-amber-100 border-2 border-pink-300 rounded-3xl p-6 text-center hover:border-pink-500 transition cursor-pointer";
     div.innerHTML = `
-      <div class="text-7xl mb-3">${seed.emoji}</div>
-      <h3 class="font-bold text-xl">${seed.name}</h3>
-      <p class="text-green-400 text-2xl font-bold">$${seed.price}</p>
+      <div class="text-7xl mb-4">${seed.emoji}</div>
+      <h3 class="font-bold text-2xl text-pink-700">${seed.name}</h3>
+      <p class="text-emerald-600 text-2xl font-bold">$${seed.price}</p>
       <button onclick="buySeed(${seed.id}); event.stopImmediatePropagation()" 
-              class="mt-4 w-full bg-emerald-700 hover:bg-emerald-600 py-3 rounded-xl font-bold">
-        COMPRAR E PLANTAR
+              class="mt-5 w-full bg-pink-500 hover:bg-pink-600 text-white py-4 rounded-3xl font-bold">
+        Comprar e Plantar
       </button>
     `;
     container.appendChild(div);
@@ -274,8 +275,7 @@ function openShop() {
 
 function buySeed(id) {
   const seed = availableSeeds.find(s => s.id === id);
-  if (!seed) return;
-  if (money < seed.price) return alert("Dinheiro insuficiente!");
+  if (money < seed.price) return alert("💸 Dinheiro insuficiente...");
 
   money -= seed.price;
   currentPlant = {
@@ -283,20 +283,19 @@ function buySeed(id) {
     emoji: seed.emoji,
     stage: 1,
     maxStage: seed.maxStage,
-    value: seed.value,
-    waterNeed: 25
+    value: seed.value
   };
 
   closeShop();
   updateUI();
-  alert(`🌱 ${seed.name} plantada com sucesso!`);
+  alert(`🌱 ${seed.name} plantadinha com carinho! 💕`);
 }
 
 function closeShop() {
   document.getElementById('shopModal').classList.add('hidden');
 }
 
-// Iniciar o jogo
+// Iniciar o jogo fofinho
 startGame();
 </script>
 </body>
