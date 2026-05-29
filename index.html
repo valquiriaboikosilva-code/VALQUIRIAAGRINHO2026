@@ -50,15 +50,15 @@
     </div>
     <div class="bg-black/40 rounded-xl p-4">
       <p class="text-sm text-gray-400">💰 Dinheiro</p>
-      <p id="money" class="text-4xl font-bold text-green-400">$ 250</p>
+      <p id="money" class="text-4xl font-bold text-green-400">$ 0</p>
     </div>
     <div class="bg-black/40 rounded-xl p-4">
       <p class="text-sm text-gray-400">💧 Água</p>
-      <p id="water" class="text-4xl font-bold text-blue-400">100%</p>
+      <p id="water" class="text-4xl font-bold text-blue-400">85%</p>
     </div>
     <div class="bg-black/40 rounded-xl p-4">
       <p class="text-sm text-gray-400">🌱 Solo</p>
-      <p id="soil" class="text-4xl font-bold text-amber-600">92%</p>
+      <p id="soil" class="text-4xl font-bold text-amber-600">88%</p>
     </div>
     <div class="bg-black/40 rounded-xl p-4">
       <p class="text-sm text-gray-400">Total Ganhos</p>
@@ -71,7 +71,6 @@
     <div class="plot" id="plot">
       <div id="waterOverlay" class="water-level h-0"></div>
       <div id="plant" class="plant">🌱</div>
-      <div id="soilInfo" class="absolute top-4 left-4 bg-black/60 px-3 py-1 rounded-full text-sm"></div>
     </div>
   </div>
 
@@ -116,12 +115,12 @@
 <script>
 // ==================== VARIÁVEIS DO JOGO ====================
 let day = 1;
-let money = 250;
+let money = 0;
 let totalEarned = 0;
-let water = 100;
-let soil = 92;
+let water = 85;
+let soil = 88;
 
-let currentPlant = null; // { name, emoji, stage, maxStage, value, waterNeed }
+let currentPlant = null;
 
 const seeds = [
   { id: 1, name: "Cenoura", emoji: "🥕", price: 30, value: 85, maxStage: 4 },
@@ -130,7 +129,20 @@ const seeds = [
   { id: 4, name: "Girassol", emoji: "🌻", price: 80, value: 250, maxStage: 6 }
 ];
 
-// ==================== FUNÇÕES ====================
+// ==================== INICIALIZAÇÃO ====================
+function startGame() {
+  // Começa com uma muda já plantada
+  currentPlant = {
+    name: "Cenoura",
+    emoji: "🌱",
+    stage: 1,        // muda jovem
+    maxStage: 4,
+    value: 85,
+    waterNeed: 25
+  };
+  updateUI();
+}
+
 function updateUI() {
   document.getElementById('day').textContent = day;
   document.getElementById('money').textContent = `$ ${money}`;
@@ -143,51 +155,33 @@ function updateUI() {
   
   if (currentPlant) {
     const growth = Math.floor((currentPlant.stage / currentPlant.maxStage) * 100);
-    plantEl.style.fontSize = `${80 + growth * 1.2}px`;
+    plantEl.style.fontSize = `${70 + growth * 1.3}px`;
     plantEl.textContent = currentPlant.emoji;
-    
-    // Efeito de água
     waterOverlay.style.height = `${water * 1.8}px`;
   } else {
-    plantEl.textContent = '🌱';
-    plantEl.style.fontSize = '60px';
+    plantEl.textContent = '';
     waterOverlay.style.height = '0';
   }
 }
 
+// ==================== AÇÕES ====================
 function plantSeed() {
   if (currentPlant) {
-    alert("Já tem uma planta crescendo!");
+    alert("Já tem uma planta no solo!");
     return;
   }
-  if (money < 30) {
-    alert("Dinheiro insuficiente para comprar semente básica!");
-    return;
-  }
-  
-  currentPlant = {
-    name: "Cenoura",
-    emoji: "🥕",
-    stage: 0,
-    maxStage: 4,
-    value: 85,
-    waterNeed: 25
-  };
-  
-  money -= 30;
-  updateUI();
+  openShop();
 }
 
 function waterPlant() {
   if (!currentPlant) {
-    alert("Plante algo primeiro!");
+    alert("Não há planta para regar!");
     return;
   }
   if (water < 15) {
-    alert("Sem água suficiente!");
+    alert("Água insuficiente!");
     return;
   }
-  
   water = Math.max(0, water - 15);
   currentPlant.stage = Math.min(currentPlant.maxStage, currentPlant.stage + 1);
   updateUI();
@@ -195,31 +189,30 @@ function waterPlant() {
 
 function harvest() {
   if (!currentPlant || currentPlant.stage < currentPlant.maxStage) {
-    alert("A planta ainda não está madura!");
+    alert("A planta ainda não está pronta para colher!");
     return;
   }
+  
   alert(`🌾 Você colheu ${currentPlant.name}!`);
-  // A planta desaparece visualmente
-  currentPlant = null;
-  document.getElementById('plant').textContent = '🌱';
+  currentPlant = null;           // Planta desaparece
   updateUI();
 }
 
 function sellHarvest() {
   if (currentPlant) {
-    alert("Colha a planta primeiro!");
+    alert("Colha a planta antes de vender!");
     return;
   }
-  const sellValue = Math.floor(Math.random() * 40) + 70; // variação
+  const sellValue = Math.floor(Math.random() * 40) + 70;
   money += sellValue;
   totalEarned += sellValue;
-  alert(`💰 Vendeu por $${sellValue}!`);
+  alert(`💰 Vendido por $${sellValue}!`);
   updateUI();
 }
 
 function regenerateSoil() {
   if (money < 25) {
-    alert("Precisa de $25 para regenerar o solo.");
+    alert("Você precisa de $25 para regenerar o solo.");
     return;
   }
   money -= 25;
@@ -231,15 +224,17 @@ function regenerateSoil() {
 function nextDay() {
   day++;
   
-  // Simulação de crescimento
   if (currentPlant) {
-    if (water > 20) {
+    water = Math.max(0, water - 18);
+    soil = Math.max(25, soil - 9);
+    
+    // Crescimento automático lento
+    if (water > 25) {
       currentPlant.stage = Math.min(currentPlant.maxStage, currentPlant.stage + 1);
     }
-    water = Math.max(0, water - 18);
-    soil = Math.max(30, soil - 8);
   } else {
-    water = Math.min(100, water + 12);
+    water = Math.min(100, water + 15);
+    soil = Math.max(25, soil - 3);
   }
   
   updateUI();
@@ -257,10 +252,9 @@ function openShop() {
       <div class="text-6xl mb-3">${seed.emoji}</div>
       <h3 class="font-bold">${seed.name}</h3>
       <p class="text-green-400">$${seed.price}</p>
-      <p class="text-sm text-gray-400">Venda: $${seed.value}</p>
       <button onclick="buySeed(${seed.id}); event.stopImmediatePropagation()" 
-              class="mt-3 w-full bg-emerald-600 hover:bg-emerald-700 py-2 rounded-xl text-sm font-bold">
-        COMPRAR
+              class="mt-4 w-full bg-emerald-600 hover:bg-emerald-700 py-2 rounded-xl text-sm font-bold">
+        COMPRAR E PLANTAR
       </button>
     `;
     container.appendChild(div);
@@ -272,7 +266,7 @@ function openShop() {
 function buySeed(id) {
   const seed = seeds.find(s => s.id === id);
   if (money < seed.price) {
-    alert("Dinheiro insuficiente!");
+    alert("Dinheiro insuficiente para comprar esta semente!");
     return;
   }
   
@@ -281,7 +275,7 @@ function buySeed(id) {
   currentPlant = {
     name: seed.name,
     emoji: seed.emoji,
-    stage: 0,
+    stage: 1,
     maxStage: seed.maxStage,
     value: seed.value,
     waterNeed: 25
@@ -289,15 +283,15 @@ function buySeed(id) {
   
   closeShop();
   updateUI();
-  alert(`🌱 ${seed.name} plantada!`);
+  alert(`🌱 ${seed.name} plantada com sucesso!`);
 }
 
 function closeShop() {
   document.getElementById('shopModal').classList.add('hidden');
 }
 
-// Inicialização
-updateUI();
+// Iniciar o jogo
+startGame();
 </script>
 
 </body>
