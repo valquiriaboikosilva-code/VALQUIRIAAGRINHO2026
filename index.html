@@ -1,14 +1,48 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Minha Fazenda de Pixel</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultivo Equilibrado - Concurso Agrinho 2026</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Minha Pequena Fazenda</h1>
-  <div id="fazenda">
-    </div>
-  <script src="script.js"></script>
+
+    <header>
+        <h1>Cultivo Equilibrado</h1>
+        <p>Agro forte, futuro sustentável: equilíbrio entre produção e meio ambiente</p>
+    </header>
+
+    <main>
+        <div id="game-container">
+            <div id="status-panel">
+                <div class="status-item">Dia: <span id="dia">1</span></div>
+                <div class="status-item">Ouro: $<span id="ouro">50</span></div>
+                <div class="status-item">Água: <span id="agua">100</span>%</div>
+                <div class="status-item">Solo: <span id="solo">100</span>%</div>
+            </div>
+
+            <div id="fazenda">
+                </div>
+
+            <div id="action-panel">
+                <button id="btn-plantar" title="Custo: $10, Solo -5%">Plantar Tomate</button>
+                <button id="btn-regar" title="Custo: Água -10%">Regar</button>
+                <button id="btn-colher" title="Solo -5%">Colher</button>
+                <button id="btn-vender" title="Ouro +25">Vender Colheita</button>
+                <button id="btn-regenerar" title="Custo: $20, Solo +15%">Regenerar Solo</button>
+            </div>
+            
+            <div id="msg-container">
+                <p id="mensagem">Bem-vindo à sua fazenda sustentável! Comece plantando.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Desenvolvido para o Concurso Agrinho 2026 - Categoria Programação</p>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
